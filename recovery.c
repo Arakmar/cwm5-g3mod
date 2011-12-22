@@ -697,8 +697,19 @@ prompt_and_wait() {
         finish_recovery(NULL);
         ui_reset_progress();
 
+	char* allItems[] = { "Reboot",
+		       "Extended Power Menu",
+                       "Update.zip",
+                       "Multiboot",
+		       "Wipe Data / Factory Reset",
+                       "Extended Wipe Menu",
+                       "Backup & Restore",
+		       "Mounts & Storage",
+		       "Miscellaneous",
+                        NULL };
+
         allow_display_toggle = 1;
-        int chosen_item = get_menu_selection(headers, MENU_ITEMS, 0, 0);
+        int chosen_item = get_menu_selection(headers, allItems, 0, 0);
         allow_display_toggle = 0;
 
         // device-specific code may take some action here.  It may
@@ -707,55 +718,42 @@ prompt_and_wait() {
         chosen_item = device_perform_action(chosen_item);
 
         switch (chosen_item) {
-            case ITEM_REBOOT:
-                poweroff=0;
-                return;
+	    case ITEM_REBOOT:
+		poweroff=0;
+		break;	    
+		
+            case ITEM_POWER:
+		powermenu();
+		break;
+	
+            case ITEM_UPDATE:
+                updatemenu();
+                break;
+
+            case ITEM_MULTIBOOT:
+                show_multi_boot_menu();
+                break;
 
             case ITEM_WIPE_DATA:
-                wipe_data(ui_text_visible());
+               wipe_data(ui_text_visible());
                 if (!ui_text_visible()) return;
                 break;
 
-            case ITEM_WIPE_CACHE:
-                if (confirm_selection("Confirm wipe?", "Yes - Wipe Cache"))
-                {
-                    ui_print("\n-- Wiping cache...\n");
-                    erase_volume("/cache");
-                    ui_print("Cache wipe complete.\n");
-                    if (!ui_text_visible()) return;
-                }
+            case ITEM_WIPE:
+               show_wipe_menu();
                 break;
 
-            case ITEM_APPLY_SDCARD:
-                if (confirm_selection("Confirm install?", "Yes - Install /sdcard/update.zip"))
-                {
-                    ui_print("\n-- Install from sdcard...\n");
-                    int status = install_package(SDCARD_PACKAGE_FILE);
-                    if (status != INSTALL_SUCCESS) {
-                        ui_set_background(BACKGROUND_ICON_ERROR);
-                        ui_print("Installation aborted.\n");
-                    } else if (!ui_text_visible()) {
-                        return;  // reboot if logs aren't visible
-                    } else {
-                        ui_print("\nInstall from sdcard complete.\n");
-                    }
-                }
-                break;
-            case ITEM_INSTALL_ZIP:
-                show_install_update_menu();
-                break;
             case ITEM_NANDROID:
                 show_nandroid_menu();
                 break;
-            case ITEM_PARTITION:
+
+            case ITEM_MOUNTS:
                 show_partition_menu();
                 break;
+
             case ITEM_ADVANCED:
                 show_advanced_menu();
                 break;
-            case ITEM_POWEROFF:
-                poweroff=1;
-                return;
         }
     }
 }

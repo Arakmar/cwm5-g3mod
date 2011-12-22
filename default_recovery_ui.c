@@ -22,16 +22,16 @@
 
 char* MENU_HEADERS[] = { NULL };
 
-char* MENU_ITEMS[] = { "reboot system now",
-                       "apply update from sdcard",
-                       "wipe data/factory reset",
-                       "wipe cache partition",
-                       "install zip from sdcard",
-                       "backup and restore",
-                       "mounts and storage",
-                       "advanced",
-                       "power off",
-                       NULL };
+char* MENU_ITEMS[] = { "Reboot",
+		       "Extended Power Menu",
+                       "Update.zip",
+                       "Multiboot",
+		       "Wipe Data / Factory Reset",
+                       "Extended Wipe Menu",
+                       "Backup & Restore",
+		       "Mounts & Storage",
+		       "Miscellaneous",
+                        NULL };
 
 int device_recovery_start() {
     return 0;

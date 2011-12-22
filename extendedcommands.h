@@ -19,6 +19,21 @@ do_nandroid_restore();
 void
 show_nandroid_restore_menu(const char* path);
 
+static int
+erase_root1(const char *root);
+
+static void
+wipe_data1(int confirm);
+
+void
+updatemenu();
+
+void
+show_wipe_menu();
+
+void
+backup_rom();
+
 void
 show_nandroid_advanced_restore_menu(const char* path);
 
@@ -39,6 +54,9 @@ __system(const char *command);
 
 void
 show_advanced_menu();
+
+void
+show_multi_boot_menu();
 
 int format_unknown_device(const char *device, const char* path, const char *fs_type);
 
