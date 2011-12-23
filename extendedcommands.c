@@ -1859,8 +1859,6 @@ void show_multi_boot_menu()
                     __system("rm -r /sd-ext/dalvik-cache");
                 ensure_path_unmounted("/data");
                 ui_print("Dalvik Cache wiped.\n");
-
-		show_choose_kernel_menu();
 		
                 break;
 	}

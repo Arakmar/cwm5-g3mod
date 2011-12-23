@@ -712,6 +712,10 @@ int nandroid_restore_partition_extended(const char* backup_path, const char* mou
         if (vol == NULL || 0 == strcmp(vol->fs_type, "auto"))
             backup_filesystem = NULL;
     }
+    else {
+        // Force tar extraction to old CWM2 backup files
+        restore_handler = tar_extract_wrapper;
+    }
 
     ensure_directory(mount_point);
 
