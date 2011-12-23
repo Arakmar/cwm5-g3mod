@@ -1278,6 +1278,7 @@ void backup_rom()
     };
 
      static char* list[] = {"~~~> Go Back <~~~",
+                     "CyanogenMod 9",
 			"CyanogenMod 7",
 			"CyanogenMod 6.2",			
 			"G3MOD",
@@ -1306,91 +1307,99 @@ void backup_rom()
 		return;
 		break;
 	    }
+
 	    case 1:
+	    {
+            char backup_path[PATH_MAX];
+            sprintf(backup_path, "/sdcard/Android/data/g3mod/roms/CyanogenMod9_ROM");
+            nandroid_backup_system(backup_path);
+    	    break;
+       	    }
+	    case 2:
 	    {
             char backup_path[PATH_MAX];
             sprintf(backup_path, "/sdcard/Android/data/g3mod/roms/CyanogenMod7_ROM");
             nandroid_backup_system(backup_path);
     	    break;
        	    }
-            case 2:
+            case 3:
 	    {
             char backup_path[PATH_MAX];
             sprintf(backup_path, "/sdcard/Android/data/g3mod/roms/CyanogenMod6_ROM");
             nandroid_backup_system(backup_path);
     	    break;
        	    }
-	    case 3:
+	    case 4:
 	    {
             char backup_path[PATH_MAX];
             sprintf(backup_path, "/sdcard/Android/data/g3mod/roms/G3MOD_ROM");
             nandroid_backup_system(backup_path);
     	    break;
        	    }
-	    case 4:
+	    case 5:
 	    {
             char backup_path[PATH_MAX];
             sprintf(backup_path, "/sdcard/Android/data/g3mod/roms/Kyrillos_ROM");
             nandroid_backup_system(backup_path);
             break;
     	    }	
-            case 5:
+            case 6:
 	    {
             char backup_path[PATH_MAX];
             sprintf(backup_path, "/sdcard/Android/data/g3mod/roms/Grigora_ROM");
             nandroid_backup_system(backup_path);
             break;
     	    }
-	    case 6:
+	    case 7:
 	    {
             char backup_path[PATH_MAX];
             sprintf(backup_path, "/sdcard/Android/data/g3mod/roms/AOSP_ROM");
             nandroid_backup_system(backup_path);
             break;
     	    }
-	    case 7:
+	    case 8:
 	    {
             char backup_path[PATH_MAX];
             sprintf(backup_path, "/sdcard/Android/data/g3mod/roms/DutchMods_ROM");
             nandroid_backup_system(backup_path);
     	    break;
        	    }
-	    case 8:
+	    case 9:
 	    {
             char backup_path[PATH_MAX];
             sprintf(backup_path, "/sdcard/Android/data/g3mod/roms/Kyorarom_ROM");
             nandroid_backup_system(backup_path);
     	    break;
        	    }
-	    case 9:
+	    case 10:
 	    {
             char backup_path[PATH_MAX];
             sprintf(backup_path, "/sdcard/Android/data/g3mod/roms/Indroid_ROM");
             nandroid_backup_system(backup_path);
     	    break;
        	    }
-	    case 10:
+	    case 11:
 	    {
             char backup_path[PATH_MAX];
             sprintf(backup_path, "/sdcard/Android/data/g3mod/roms/rom1_ROM");
             nandroid_backup_system(backup_path);
             break;
     	    }
-	    case 11:
+	    case 12:
 	    {
             char backup_path[PATH_MAX];
             sprintf(backup_path, "/sdcard/Android/data/g3mod/roms/rom2_ROM");
             nandroid_backup_system(backup_path);
             break;
     	    }
-	    case 12:
+	    case 13:
 	    {
             char backup_path[PATH_MAX];
             sprintf(backup_path, "/sdcard/Android/data/g3mod/roms/rom3_ROM");
             nandroid_backup_system(backup_path);
             break;
     	    }
-	    case 13:
+	    case 14:
 	    {
             char backup_path[PATH_MAX];
             sprintf(backup_path, "/sdcard/Android/data/g3mod/roms/rom4_ROM");
@@ -1411,6 +1420,7 @@ void backup_data()
 			"Samsung Based Froyo ROM",
 			"CyanogenMod 6.2",			
 			"CyanogenMod 7",
+                     "CyanogenMod 9",
                             NULL
     };
 
@@ -1450,6 +1460,16 @@ void backup_data()
 	    {
             char backup_path[PATH_MAX];
             sprintf(backup_path, "/sdcard/Android/data/g3mod/data/CM7_DATA");
+            nandroid_backup_data(backup_path);
+	    nandroid_backup_sd(backup_path);
+	    nandroid_backup_androidSecure(backup_path);
+	    return;
+            break;
+    	    }	
+           case 4:
+	    {
+            char backup_path[PATH_MAX];
+            sprintf(backup_path, "/sdcard/Android/data/g3mod/data/CM9_DATA");
             nandroid_backup_data(backup_path);
 	    nandroid_backup_sd(backup_path);
 	    nandroid_backup_androidSecure(backup_path);
@@ -1736,7 +1756,8 @@ void create_rom_dirs() {
 
 	// Rom Backup Dir
 	__system("mkdir /sdcard/Android/data/g3mod/roms/CyanogenMod6_ROM");
-	__system("mkdir /sdcard/Android/data/g3mod/roms/CyanogenMod7_ROM"); //Add CM7 Support
+	__system("mkdir /sdcard/Android/data/g3mod/roms/CyanogenMod7_ROM");
+       __system("mkdir /sdcard/Android/data/g3mod/roms/CyanogenMod9_ROM");
 	__system("mkdir /sdcard/Android/data/g3mod/roms/G3MOD_ROM");
 	__system("mkdir /sdcard/Android/data/g3mod/roms/Kyrillos_ROM");
 	__system("mkdir /sdcard/Android/data/g3mod/roms/Grigora_ROM");
@@ -1753,11 +1774,13 @@ void create_rom_dirs() {
 	__system("mkdir /sdcard/Android/data/g3mod/data/Froyo_DATA");
 	__system("mkdir /sdcard/Android/data/g3mod/data/CM6_DATA");
 	__system("mkdir /sdcard/Android/data/g3mod/data/CM7_DATA");
+       __system("mkdir /sdcard/Android/data/g3mod/data/CM9_DATA");
 	
 	//Kernel dir
 	__system("mkdir /sdcard/Android/data/g3mod/kernel/Froyo");
 	__system("mkdir /sdcard/Android/data/g3mod/kernel/CM6");
 	__system("mkdir /sdcard/Android/data/g3mod/kernel/CM7");
+       __system("mkdir /sdcard/Android/data/g3mod/kernel/CM9");
 }
 
 void show_multi_boot_menu()
