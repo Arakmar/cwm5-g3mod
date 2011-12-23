@@ -929,6 +929,7 @@ main(int argc, char **argv) {
         // let's set up some default options
         signature_check_enabled = 0;
         script_assert_enabled = 0;
+        md5_check_enabled = 0;
         is_user_initiated_recovery = 1;
         ui_set_show_text(1);
         ui_set_background(BACKGROUND_ICON_CLOCKWORK);

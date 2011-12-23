@@ -881,13 +881,23 @@ int nandroid_restore(const char* backup_path, int restore_boot, int restore_syst
 
     if (ensure_path_mounted(backup_path) != 0)
         return print_and_error("Can't mount backup path\n");
-    
+
     char tmp[PATH_MAX];
 
-    ui_print("Checking MD5 sums...\n");
-    sprintf(tmp, "cd %s && md5sum -c nandroid.md5", backup_path);
-    if (0 != __system(tmp))
-        return print_and_error("MD5 mismatch!\n");
+    if (md5_check_enabled)
+    {
+        ui_print("Checking MD5 sums...\n");
+    
+        char md5FileName[PATH_MAX];
+        struct stat md5File;
+        sprintf(md5FileName, "%s/nandroid.md5", backup_path);
+        sprintf(tmp, "cd %s && md5sum -c nandroid.md5", backup_path);
+
+        if (0 != stat(md5FileName, &md5File))
+            ui_print("MD5 sums file not found. Checking skipped !\n");
+        else if (0 != __system(tmp))
+            return print_and_error("MD5 mismatch!\n");
+    }
     
     int ret;
 

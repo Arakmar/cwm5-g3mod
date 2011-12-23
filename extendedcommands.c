@@ -46,6 +46,7 @@
 
 int signature_check_enabled = 1;
 int script_assert_enabled = 1;
+int md5_check_enabled = 1;
 static const char *SDCARD_UPDATE_FILE = "/sdcard/update.zip";
 
 void
@@ -53,6 +54,12 @@ toggle_signature_check()
 {
     signature_check_enabled = !signature_check_enabled;
     ui_print("Signature Check: %s\n", signature_check_enabled ? "Enabled" : "Disabled");
+}
+
+void toggle_md5sum_check()
+{
+    md5_check_enabled = !md5_check_enabled;
+    ui_print("MD5 sum check: %s\n", md5_check_enabled ? "Enabled" : "Disabled");
 }
 
 void toggle_script_asserts()
@@ -874,6 +881,7 @@ void show_nandroid_menu()
                             "Restore",
 			    "Advanced Backup",
                             "Advanced Restore",
+                         "Toggle MD5 sum check",
                             NULL
     };
 for (;;)
@@ -915,6 +923,9 @@ for (;;)
             break;
         case 4:
             show_nandroid_advanced_restore_menu("/sdcard");
+            break;
+	 case 5:
+	     toggle_md5sum_check();
             break;
     }
 	}
