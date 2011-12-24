@@ -767,7 +767,6 @@ void show_nandroid_advanced_restore_menu(const char* path)
                             "Restore data",
                             "Restore cache",
                             "Restore sd-ext",
-                            "Restore wimax",
                             NULL
     };
     
@@ -800,10 +799,6 @@ void show_nandroid_advanced_restore_menu(const char* path)
         case 4:
             if (confirm_selection(confirm_restore, "Yes - Restore sd-ext"))
                 nandroid_restore(file, 0, 0, 0, 0, 1, 0);
-            break;
-        case 5:
-            if (confirm_selection(confirm_restore, "Yes - Restore wimax"))
-                nandroid_restore(file, 0, 0, 0, 0, 0, 1);
             break;
     }
 }
@@ -857,6 +852,7 @@ void show_nandroid_advanced_backup_menu(const char* path)
         case 2:
             if (confirm_selection(confirm_restore, "Yes - Backup data"))
                 nandroid_backup_data(backup_path);
+                nandroid_backup_androidSecure(backup_path);
             break;
         case 3:
             if (confirm_selection(confirm_restore, "Yes - Backup cache"))
@@ -864,7 +860,7 @@ void show_nandroid_advanced_backup_menu(const char* path)
             break;
         case 4:
             if (confirm_selection(confirm_restore, "Yes - Backup sd-ext"))
-                nandroid_backup_sd(backup_path);;
+                nandroid_backup_sd(backup_path);
             break;
     }
 }
@@ -1454,7 +1450,6 @@ void backup_data()
             nandroid_backup_data(backup_path);
 	    nandroid_backup_sd(backup_path);
 	    nandroid_backup_androidSecure(backup_path);
-	    return;
     	    break;
        	    }
 	    case 2:
@@ -1464,7 +1459,6 @@ void backup_data()
             nandroid_backup_data(backup_path);
 	    nandroid_backup_sd(backup_path);
 	    nandroid_backup_androidSecure(backup_path);
-	    return;
     	    break;
        	    }
 	    case 3:
@@ -1474,7 +1468,6 @@ void backup_data()
             nandroid_backup_data(backup_path);
 	    nandroid_backup_sd(backup_path);
 	    nandroid_backup_androidSecure(backup_path);
-	    return;
             break;
     	    }	
            case 4:
@@ -1484,11 +1477,10 @@ void backup_data()
             nandroid_backup_data(backup_path);
 	    nandroid_backup_sd(backup_path);
 	    nandroid_backup_androidSecure(backup_path);
-	    return;
             break;
     	    }	
 	}
-}
+    }
 }
 
 void powermenu()
