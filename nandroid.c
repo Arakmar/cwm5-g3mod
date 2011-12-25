@@ -108,11 +108,10 @@ static int mkyaffs2image_wrapper(const char* backup_path, const char* backup_fil
 
 static int tar_compress_wrapper(const char* backup_path, const char* backup_file_image, int callback) {
     char tmp[PATH_MAX];
-    // All subdirs are included in the tar archive
     if (strcmp(backup_path, "/data") == 0 && volume_for_path("/sdcard") == NULL)
-      sprintf(tmp, "tar cvf %s.tar --exclude 'media' %s ; exit $?", backup_file_image, backup_path);
+      sprintf(tmp, "cd $(dirname %s) ; tar cvf %s.tar --exclude 'media' $(basename %s) ; exit $?", backup_path, backup_file_image, backup_path);
     else
-      sprintf(tmp, "tar cvf %s.tar %s ; exit $?", backup_file_image, backup_path);
+      sprintf(tmp, "cd $(dirname %s) ; tar cvf %s.tar $(basename %s) ; exit $?", backup_path, backup_file_image, backup_path);
 
     FILE *fp = __popen(tmp, "r");
     if (fp == NULL) {
@@ -611,6 +610,25 @@ static int unyaffs_wrapper(const char* backup_file_image, const char* backup_pat
 
 static int tar_extract_wrapper(const char* backup_file_image, const char* backup_path, int callback) {
     char tmp[PATH_MAX];
+    sprintf(tmp, "cd $(dirname %s) ; tar xvf %s ; exit $?", backup_path, backup_file_image);
+
+    char path[PATH_MAX];
+    FILE *fp = __popen(tmp, "r");
+    if (fp == NULL) {
+        ui_print("Unable to execute tar.\n");
+        return -1;
+    }
+
+    while (fgets(path, PATH_MAX, fp) != NULL) {
+        if (callback)
+            yaffs_callback(path);
+    }
+
+    return __pclose(fp);
+}
+
+static int tar_extract_wrapper_legacy(const char* backup_file_image, const char* backup_path, int callback) {
+    char tmp[PATH_MAX];
     // All subdirs are included in the tar archive
     sprintf(tmp, "cd / ; tar xvf %s ; exit $?", backup_file_image);
 
@@ -718,8 +736,8 @@ int nandroid_restore_partition_extended(const char* backup_path, const char* mou
             backup_filesystem = NULL;
     }
     else {
-        // Force tar extraction to old CWM2 backup files
-        restore_handler = tar_extract_wrapper;
+        // Force legacy tar extraction to old CWM2 backup files
+        restore_handler = tar_extract_wrapper_legacy;
     }
 
     ensure_directory(mount_point);
